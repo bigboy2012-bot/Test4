@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daily Success">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Daily Success</title>
+<style>
+:root{color-scheme:dark;--bg:#101010;--panel:#1d1b17;--panel2:#28241c;--gold:#dfbd69;--gold2:#9c7937;--ink:#f6f0e4;--muted:#b8ad98;--line:#51442c;--green:#73c69a;--red:#db8b7e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:760px;margin:auto;min-height:100vh;padding:18px 15px 30px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 2px 18px}
+.brand{display:flex;align-items:center;gap:11px}.crown{width:45px;height:45px;border:1px solid var(--gold2);border-radius:14px;display:grid;place-items:center;color:var(--gold);font-size:24px;background:linear-gradient(145deg,#302719,#171511)}
+h1{font-size:18px;letter-spacing:2px;color:var(--gold);margin:0}.sub{font-size:10px;letter-spacing:1.5px;color:var(--muted);margin-top:4px}
+.date-label{font-size:12px;color:var(--muted);text-align:right}
+.hero{background:linear-gradient(135deg,#292419,#191713 70%);border:1px solid var(--line);border-radius:20px;padding:19px;margin-bottom:14px}
+.eyebrow{font-size:11px;letter-spacing:1.5px;color:var(--gold);font-weight:700}.hero h2{font-size:27px;margin:8px 0 16px}.progressrow{display:flex;justify-content:space-between;align-items:end;color:var(--muted);font-size:13px}.percent{font-size:26px;color:var(--gold);font-weight:700}
+.track{height:8px;background:#51442c;border-radius:20px;overflow:hidden;margin-top:8px}.fill{height:100%;width:0;background:linear-gradient(90deg,#a7833e,#f0d58c);border-radius:20px;transition:width .2s}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:15px}.stat{background:var(--panel);border:1px solid #383126;border-radius:13px;padding:12px}.stat strong{display:block;font-size:21px}.stat span{font-size:10px;letter-spacing:1px;color:var(--muted)}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+nav button{background:var(--panel);border:1px solid #393126;color:var(--muted);padding:11px 6px;border-radius:12px;font-size:12px;font-weight:650}
+nav button.active{background:#514124;border-color:var(--gold2);color:#ffe3a0}
+section.page{display:none}section.page.active{display:block}
+.panel{background:var(--panel);border:1px solid #3b3326;border-radius:17px;padding:15px;margin-bottom:12px}
+h3{font-size:18px;margin:0 0 5px;color:var(--gold)}.hint{font-size:13px;color:var(--muted);margin:0 0 14px}
+.field{width:100%;background:#111;border:1px solid #51442c;border-radius:10px;color:var(--ink);padding:12px;margin:5px 0 9px;min-width:0}
+textarea.field{resize:vertical;min-height:145px}
+.row{display:flex;gap:8px;align-items:center}.row .field{flex:1}
+.btn{border:1px solid var(--gold2);background:linear-gradient(135deg,#80612c,#4d3a1d);color:#fff1cc;border-radius:10px;padding:11px 14px;font-weight:700}
+.btn.secondary{background:#25221c;color:var(--gold);border-color:#51442c}.btn.danger{background:#34201d;border-color:#694038;color:#f0b2a7}.btn.small{padding:7px 10px;font-size:12px}
+.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #393126}.item:last-child{border:0}
+.item input[type=checkbox]{width:19px;height:19px;accent-color:#d8b45b;flex:none}.item .label{flex:1;line-height:1.35;overflow-wrap:anywhere}.item.done .label{text-decoration:line-through;color:#8e8779}
+.meta{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.delete{background:transparent;border:0;color:#b7a98b;font-size:18px;padding:5px}
+.empty{padding:17px;text-align:center;color:var(--muted);font-size:13px;background:#171612;border-radius:11px}
+.quicklinks{display:grid;grid-template-columns:1fr 1fr;gap:9px}.quicklinks button{text-align:left;background:#25221c;border:1px solid #51442c;border-radius:12px;padding:13px;color:var(--ink)}.quicklinks b{display:block;color:var(--gold);margin-bottom:4px}.quicklinks small{color:var(--muted)}
+footer{text-align:center;color:#8e826b;font-size:10px;letter-spacing:1.5px;padding:18px 0}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#302719;border:1px solid var(--gold2);color:#ffe7ae;padding:11px 16px;border-radius:12px;display:none;z-index:5;max-width:90%;font-size:13px}
+@media(min-width:600px){.app{padding:28px}.stats{gap:13px}nav{grid-template-columns:repeat(6,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><div class="crown">♛</div><div><h1>DAILY SUCCESS</h1><div class="sub">PERSONAL COMMAND CENTER</div></div></div><div class="date-label" id="todayDate"></div></header>
+<div class="hero"><div class="eyebrow">TODAY'S PERFORMANCE</div><h2>Make today count.</h2><div class="progressrow"><span>Daily checklist progress</span><span class="percent" id="percent">0%</span></div><div class="track"><div class="fill" id="progress"></div></div></div>
+<div class="stats"><div class="stat"><strong id="taskCount">0</strong><span>TASKS LEFT</span></div><div class="stat"><strong id="workCount">0</strong><span>WORK ITEMS</span></div><div class="stat"><strong id="goalCount">0/0</strong><span>HABITS DONE</span></div></div>
+<nav>
+<button class="active" data-tab="home">⌂ Home</button><button data-tab="checklist">☑ Checklist</button><button data-tab="calendar">▦ Calendar</button><button data-tab="business">▣ Business</button><button data-tab="goals">◎ Goals</button><button data-tab="notes">✎ Notes</button>
+</nav>
+<section class="page active" id="home">
+<div class="panel"><h3>Your focus</h3><p class="hint">A clear plan turns effort into progress.</p><div class="quicklinks"><button data-go="checklist"><b>☑ Daily checklist</b><small>Stay on top of your day</small></button><button data-go="calendar"><b>▦ Schedule</b><small>Appointments and events</small></button><button data-go="business"><b>▣ Work & business</b><small>Jobs and projects</small></button><button data-go="goals"><b>◎ Goals & habits</b><small>Build consistency</small></button></div></div>
+<div class="panel"><h3>Today's priorities</h3><p class="hint">Your first few checklist items.</p><div id="homeTasks"></div></div>
+<div class="panel"><h3>Coming up</h3><div id="homeEvents"></div></div>
+</section>
+<section class="page" id="checklist"><div class="panel"><h3>Daily checklist</h3><p class="hint">Add tasks, then check them off as you go.</p><form id="taskForm" class="row"><input class="field" id="taskInput" placeholder="Add a task..." required><button class="btn">Add</button></form><div id="taskList"></div><button class="btn secondary" id="resetTasks">Reset today's checkboxes</button></div></section>
+<section class="page" id="calendar"><div class="panel"><h3>Calendar & schedule</h3><p class="hint">Add appointments and important events.</p><form id="eventForm"><input class="field" id="eventName" placeholder="Event or appointment" required><div class="row"><input class="field" id="eventDate" type="date" required><input class="field" id="eventTime" type="time"></div><button class="btn">Add event</button></form><div id="eventList"></div></div></section>
+<section class="page" id="business"><div class="panel"><h3>Work & business</h3><p class="hint">Keep jobs, projects, and work responsibilities organized.</p><form id="workForm" class="row"><input class="field" id="workInput" placeholder="Add a job or work task..." required><button class="btn">Add</button></form><div id="workList"></div></div></section>
+<section class="page" id="goals"><div class="panel"><h3>Goals & habits</h3><p class="hint">Track the habits that move you forward.</p><form id="goalForm" class="row"><input class="field" id="goalInput" placeholder="Add a goal or habit..." required><button class="btn">Add</button></form><div id="goalList"></div><button class="btn secondary" id="resetGoals">Reset daily habits</button></div></section>
+<section class="page" id="notes"><div class="panel"><h3>Notes & ideas</h3><p class="hint">Your notes save automatically on this device.</p><textarea id="notesInput" class="field" placeholder="Write down plans, ideas, and important details..."></textarea><span class="meta" id="savedLabel">Saved on this device</span></div></section>
+<footer>DAILY SUCCESS · PLAN. EXECUTE. SUCCEED.</footer>
+</div><div class="toast" id="toast"></div>
+<script>
+const KEY='daily-success-v1';
+const todayKey=()=>new Date().toLocaleDateString('en-CA');
+const defaults=()=>({day:todayKey(),tasks:[{id:1,name:'Get dressed',done:false},{id:2,name:'Eat breakfast and pack lunch',done:false},{id:3,name:"Review today's schedule",done:false},{id:4,name:'Complete important work',done:false}],events:[],work:[],goals:[{id:1,name:'Exercise',done:false},{id:2,name:'Improve finances',done:false},{id:3,name:'Learn something new',done:false}],notes:''});
+let data;
+try{data=JSON.parse(localStorage.getItem(KEY))||defaults()}catch{data=defaults()}
+if(data.day!==todayKey()){data.day=todayKey();data.tasks=(data.tasks||[]).map(t=>({...t,done:false}));data.goals=(data.goals||[]).map(g=>({...g,done:false}));}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render();document.getElementById('savedLabel').textContent='Saved just now on this device';}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function toast(s){let el=document.getElementById('toast');el.textContent=s;el.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display='none',2200)}
+function listHtml(items,type){if(!items.length)return '<div class="empty">Nothing here yet. Add your first item above.</div>';return items.map(x=>`<div class="item ${x.done?'done':''}"><input type="checkbox" data-type="${type}" data-id="${x.id}" ${x.done?'checked':''}><span class="label">${esc(x.name)}${x.date?`<span class="meta">${esc(x.date)} ${esc(x.time||'')}</span>`:''}</span><button class="delete" data-delete="${type}" data-id="${x.id}" aria-label="Delete">×</button></div>`).join('')}
+function render(){
+ let done=data.tasks.filter(x=>x.done).length, pct=data.tasks.length?Math.round(done/data.tasks.length*100):0;
+ document.getElementById('percent').textContent=pct+'%';document.getElementById('progress').style.width=pct+'%';
+ document.getElementById('taskCount').textContent=data.tasks.filter(x=>!x.done).length;
+ document.getElementById('workCount').textContent=data.work.filter(x=>!x.done).length;
+ document.getElementById('goalCount').textContent=data.goals.filter(x=>x.done).length+'/'+data.goals.length;
+ document.getElementById('taskList').innerHTML=listHtml(data.tasks,'tasks');
+ document.getElementById('workList').innerHTML=listHtml(data.work,'work');
+ document.getElementById('goalList').innerHTML=listHtml(data.goals,'goals');
+ let events=[...data.events].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+ document.getElementById('eventList').innerHTML=events.length?events.map(e=>`<div class="item"><span class="label">${esc(e.name)}<span class="meta">${esc(e.date)} ${esc(e.time||'')}</span></span><button class="delete" data-delete="events" data-id="${e.id}">×</button></div>`).join(''):'<div class="empty">No events added yet.</div>';
+ document.getElementById('homeTasks').innerHTML=data.tasks.length?data.tasks.slice(0,3).map(t=>`<div class="item ${t.done?'done':''}"><input type="checkbox" data-type="tasks" data-id="${t.id}" ${t.done?'checked':''}><span class="label">${esc(t.name)}</span></div>`).join(''):'<div class="empty">No tasks yet.</div>';
+ document.getElementById('homeEvents').innerHTML=events.length?events.slice(0,3).map(e=>`<div class="item"><span class="label">${esc(e.name)}<span class="meta">${esc(e.date)} ${esc(e.time||'')}</span></span></div>`).join(''):'<div class="empty">No upcoming events. Add one in Calendar.</div>';
+}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.go)));
+function showTab(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.addEventListener('change',e=>{let el=e.target;if(el.matches('input[type=checkbox][data-type]')){let arr=data[el.dataset.type],x=arr.find(x=>x.id==el.dataset.id);if(x)x.done=el.checked;save()}});
+document.addEventListener('click',e=>{let b=e.target.closest('[data-delete]');if(!b)return;data[b.dataset.delete]=data[b.dataset.delete].filter(x=>x.id!=b.dataset.id);save();toast('Item deleted')});
+document.getElementById('taskForm').addEventListener('submit',e=>{e.preventDefault();data.tasks.push({id:Date.now(),name:document.getElementById('taskInput').value.trim(),done:false});e.target.reset();save()});
+document.getElementById('workForm').addEventListener('submit',e=>{e.preventDefault();data.work.push({id:Date.now(),name:document.getElementById('workInput').value.trim(),done:false});e.target.reset();save()});
+document.getElementById('goalForm').addEventListener('submit',e=>{e.preventDefault();data.goals.push({id:Date.now(),name:document.getElementById('goalInput').value.trim(),done:false});e.target.reset();save()});
+document.getElementById('eventForm').addEventListener('submit',e=>{e.preventDefault();data.events.push({id:Date.now(),name:document.getElementById('eventName').value.trim(),date:document.getElementById('eventDate').value,time:document.getElementById('eventTime').value});e.target.reset();save()});
+document.getElementById('resetTasks').addEventListener('click',()=>{data.tasks=data.tasks.map(t=>({...t,done:false}));save();toast('Checklist reset')});
+document.getElementById('resetGoals').addEventListener('click',()=>{data.goals=data.goals.map(g=>({...g,done:false}));save();toast('Habits reset')});
+document.getElementById('notesInput').value=data.notes||'';
+document.getElementById('notesInput').addEventListener('input',e=>{data.notes=e.target.value;localStorage.setItem(KEY,JSON.stringify(data));document.getElementById('savedLabel').textContent='Saved on this device';});
+document.getElementById('todayDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
